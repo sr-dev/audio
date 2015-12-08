@@ -10,9 +10,6 @@ from sys import path
 import string
 import json
 
-# util
-
-
 ########## TEST CONFIGURATION
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 ########## END TEST CONFIGURATION
@@ -48,7 +45,7 @@ path.append(DJANGO_ROOT)
 
 ########## PASSWORD CONFIGURATION
 ACCESS_ROOT = join(expanduser('~'),'.djaccess')
-DB_ACCESS = 'arktic_db.json'
+DB_ACCESS = 'audio_db.json'
 ########## END PASSWORD CONFIGURATION
 
 
@@ -212,9 +209,6 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
   # Asynchronous task scheduling
   # 'djcelery',
-
-  # Static file management:
-  # 'compressor',
 )
 
 LOCAL_APPS = (
