@@ -15,11 +15,6 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 ########## END TEST CONFIGURATION
 
 
-########## AUTH CONFIGURATION
-AUTH_USER_MODEL = 'users.User'
-########## END AUTH CONFIGURATION
-
-
 ########## ALLOWED HOSTS CONFIGURATION
 ALLOWED_HOSTS = (
   'localhost',
@@ -181,7 +176,7 @@ MIDDLEWARE_CLASSES = (
 
 ########## URL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
-ROOT_URLCONF = '%s.urls' % SITE_NAME
+ROOT_URLCONF = 'woot.urls'
 ########## END URL CONFIGURATION
 
 
@@ -212,7 +207,7 @@ THIRD_PARTY_APPS = (
 )
 
 LOCAL_APPS = (
-
+	'woot.apps.aio',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -282,7 +277,7 @@ STATICFILES_FINDERS += (
 
 
 ########## CELERY CONFIGURATION
-from djcelery import setup_loader
+# from djcelery import setup_loader
 
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
@@ -299,7 +294,7 @@ CELERY_TASK_RESULT_EXPIRES = timedelta(minutes=30)
 CELERY_CHORD_PROPAGATES = True
 
 # See: http://celery.github.com/celery/django/
-setup_loader()
+# setup_loader()
 
 # rabbitmq: https://www.rabbitmq.com/man/rabbitmqctl.1.man.html
 # celery: https://zapier.com/blog/async-celery-example-why-and-how/
@@ -316,18 +311,18 @@ FILE_UPLOAD_HANDLERS = (
 
 ########## DATABASE CONFIGURATION
 # load database details from database config file
-if os.path.exists(os.path.join(ACCESS_ROOT, DB_ACCESS)):
-  with open(os.path.join(ACCESS_ROOT, DB_ACCESS), 'r') as db_json:
+if exists(join(ACCESS_ROOT, DB_ACCESS)):
+  with open(join(ACCESS_ROOT, DB_ACCESS), 'r') as db_json:
     db_data = json.load(db_json)
 
 DATABASES = {
   'default': {
     'ENGINE': db_data['backend'],
     'NAME': db_data['name'],
-    'USER': db_data['user'],
-    'PASSWORD': db_data['pwd'],
-    'HOST': db_data['host'], # Set to empty string for localhost.
-    'PORT': db_data['port'], # Set to empty string for default.
+    'USER': db_data['user'] if 'user' in db_data else '',
+    'PASSWORD': db_data['pwd'] if 'pwd' in db_data else '',
+    'HOST': db_data['host'] if 'host' in db_data else '', # Set to empty string for localhost.
+    'PORT': db_data['port'] if 'port' in db_data else '', # Set to empty string for default.
   }
 }
 ########## END DATABASE CONFIGURATION
